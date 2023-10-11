@@ -14,7 +14,7 @@ func (c *Client) RegisterToken(request RegisterTokenRequest) (RegisterTokenRespo
 		return RegisterTokenResponse{}, err
 	}
 
-	req, err := http.NewRequest("POST", c.BaseUrl+"/register/token", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "https://"+c.BaseUrl+"/register/token", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return RegisterTokenResponse{}, err
 	}
@@ -45,7 +45,7 @@ func (c *Client) VerifySignin(request VerifySigninRequest) (VerifySigninResponse
 		return VerifySigninResponse{}, err
 	}
 
-	req, err := http.NewRequest("POST", c.BaseUrl+"/signin/verify", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "https://"+c.BaseUrl+"/signin/verify", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return VerifySigninResponse{}, err
 	}
@@ -76,7 +76,7 @@ func (c *Client) AddAliases(request AliasRequest) error {
 		return err
 	}
 
-	req, err := http.NewRequest("POST", c.BaseUrl+"/alias", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "https://"+c.BaseUrl+"/alias", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
 	}
@@ -98,7 +98,7 @@ func (c *Client) AddAliases(request AliasRequest) error {
 }
 
 func (c *Client) ListCredentials(userId string) (ListCredentialsResponse, error) {
-	req, err := http.NewRequest("GET", c.BaseUrl+"/credentials/list?userId="+userId, nil)
+	req, err := http.NewRequest("GET", "https://"+c.BaseUrl+"/credentials/list?userId="+userId, nil)
 	if err != nil {
 		return ListCredentialsResponse{}, err
 	}
@@ -128,7 +128,7 @@ func (c *Client) DeleteCredential(request DeleteCredentialRequest) error {
 		return err
 	}
 
-	req, err := http.NewRequest("POST", c.BaseUrl+"/credentials/delete", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "https://"+c.BaseUrl+"/credentials/delete", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
 	}

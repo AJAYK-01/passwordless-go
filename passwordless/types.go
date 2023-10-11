@@ -60,7 +60,9 @@ type Credential struct {
 	UserId           string               `json:"userId"`
 }
 
-type ListCredentialsResponse []Credential
+type ListCredentialsResponse struct {
+	Values []Credential `json:"values"`
+}
 
 type DeleteCredentialRequest struct {
 	CredentialId string `json:"credentialId"`
