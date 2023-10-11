@@ -47,7 +47,7 @@ func TestListCredentials(t *testing.T) {
 		t.Errorf("got an error: %v", err)
 	}
 	if len(resp.Values) == 0 || resp.Values[0].Descriptor.Type != "public-key" || resp.Values[0].Descriptor.Id != os.Getenv("LIST_CREDENTIAL_ID") {
-		t.Errorf("got unexpected response: %v", resp.Values[0].Descriptor.Id)
+		t.Errorf("got unexpected response: %v", resp.Values)
 	}
 }
 

@@ -30,6 +30,10 @@ func (c *Client) RegisterToken(request RegisterTokenRequest) (RegisterTokenRespo
 
 	body, _ := io.ReadAll(resp.Body)
 
+	if resp.StatusCode != 200 {
+		return RegisterTokenResponse{}, errors.New("failed to register, error: " + string(body))
+	}
+
 	var response RegisterTokenResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
@@ -61,6 +65,10 @@ func (c *Client) VerifySignin(request VerifySigninRequest) (VerifySigninResponse
 
 	body, _ := io.ReadAll(resp.Body)
 
+	if resp.StatusCode != 200 {
+		return VerifySigninResponse{}, errors.New("failed to verify, error: " + string(body))
+	}
+
 	var response VerifySigninResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
@@ -91,7 +99,8 @@ func (c *Client) AddAliases(request AliasRequest) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return errors.New("failed to add aliases")
+		body, _ := io.ReadAll(resp.Body)
+		return errors.New("failed to add aliases, error: " + string(body))
 	}
 
 	return nil
@@ -112,6 +121,10 @@ func (c *Client) ListCredentials(userId string) (ListCredentialsResponse, error)
 	defer resp.Body.Close()
 
 	body, _ := io.ReadAll(resp.Body)
+
+	if resp.StatusCode != 200 {
+		return ListCredentialsResponse{}, errors.New("failed to list credentials, error: " + string(body))
+	}
 
 	var response ListCredentialsResponse
 	err = json.Unmarshal(body, &response)
@@ -143,7 +156,8 @@ func (c *Client) DeleteCredential(request DeleteCredentialRequest) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return errors.New("failed to delete credential")
+		body, _ := io.ReadAll(resp.Body)
+		return errors.New("failed to delete credential, error: " + string(body))
 	}
 
 	return nil
