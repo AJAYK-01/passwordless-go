@@ -11,6 +11,13 @@ type RegisterTokenRequest struct {
 	Displayname string `json:"displayname"`
 }
 
+type APIErrorResponse struct {
+	Type      string `json:"type"`
+	Title     string `json:"title"`
+	Status    int    `json:"status"`
+	ErrorCode string `json:"errorCode"`
+}
+
 type RegisterTokenResponse struct {
 	Token string `json:"token"`
 }
