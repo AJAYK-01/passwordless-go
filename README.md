@@ -5,6 +5,8 @@ Official Passwordless docs: https://docs.passwordless.dev
 
 Admin portal to create an account: https://admin.passwordless.dev
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/AJAYK-01/passwordless-go/passwordless.svg)](https://pkg.go.dev/github.com/AJAYK-01/passwordless-go/passwordless)
+
 # Installation
 
 ``` 
