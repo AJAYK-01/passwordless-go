@@ -71,7 +71,7 @@ jobs:
 
     - run: |
         echo "Run, Build Module passwordless"
-        go build ./../../passwordless
+        go build ./passwordless
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
