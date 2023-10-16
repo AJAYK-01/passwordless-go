@@ -3,12 +3,24 @@ package passwordless
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
 )
 
-func (c *Client) RegisterToken(request RegisterTokenRequest) (RegisterTokenResponse, error) {
+// The SDK client to interact with the passwordless api.
+//
+// ApiSecret: The Private API Key from Application dashboard.
+//
+// BaseUrl: Use "v4.passwordless.dev" or equivalent if changed.
+//
+// Docs: https://docs.passwordless.dev/guide/api.html#backend-api-reference
+type Client struct {
+	ApiSecret string
+	BaseUrl   string
+}
+
+// Creates a registration token for a user used for registration.
+func (c *Client) CreateRegisterToken(request RegisterRequest) (RegisterTokenResponse, error) {
 	jsonData, err := json.Marshal(request)
 	if err != nil {
 		return RegisterTokenResponse{}, err
@@ -33,7 +45,7 @@ func (c *Client) RegisterToken(request RegisterTokenRequest) (RegisterTokenRespo
 	if resp.StatusCode != 200 {
 		var apiErr APIErrorResponse
 		json.Unmarshal(body, &apiErr)
-		return RegisterTokenResponse{}, errors.New(apiErr.Title)
+		return RegisterTokenResponse{}, apiErr
 	}
 
 	var response RegisterTokenResponse
@@ -45,8 +57,13 @@ func (c *Client) RegisterToken(request RegisterTokenRequest) (RegisterTokenRespo
 	return response, nil
 }
 
-func (c *Client) VerifySignin(request VerifySigninRequest) (VerifySigninResponse, error) {
-	jsonData, err := json.Marshal(request)
+// Verifies a token and returns the user if the token is valid.
+func (c *Client) VerifySignin(token string) (VerifySigninResponse, error) {
+	data := map[string]interface{}{
+		"token": token,
+	}
+
+	jsonData, err := json.Marshal(data)
 	if err != nil {
 		return VerifySigninResponse{}, err
 	}
@@ -70,7 +87,7 @@ func (c *Client) VerifySignin(request VerifySigninRequest) (VerifySigninResponse
 	if resp.StatusCode != 200 {
 		var apiErr APIErrorResponse
 		json.Unmarshal(body, &apiErr)
-		return VerifySigninResponse{}, errors.New(apiErr.Title)
+		return VerifySigninResponse{}, apiErr
 	}
 
 	var response VerifySigninResponse
@@ -82,7 +99,8 @@ func (c *Client) VerifySignin(request VerifySigninRequest) (VerifySigninResponse
 	return response, nil
 }
 
-func (c *Client) AddAliases(request AliasRequest) error {
+// Adds aliases for a user. Removes any existing aliases not included in this request.
+func (c *Client) SetAliases(request AliasRequest) error {
 	jsonData, err := json.Marshal(request)
 	if err != nil {
 		return err
@@ -106,12 +124,13 @@ func (c *Client) AddAliases(request AliasRequest) error {
 		body, _ := io.ReadAll(resp.Body)
 		var apiErr APIErrorResponse
 		json.Unmarshal(body, &apiErr)
-		return errors.New(apiErr.Title)
+		return apiErr
 	}
 
 	return nil
 }
 
+// Lists all credentials for a user.
 func (c *Client) ListCredentials(userId string) (ListCredentialsResponse, error) {
 	req, err := http.NewRequest("GET", "https://"+c.BaseUrl+"/credentials/list?userId="+userId, nil)
 	if err != nil {
@@ -131,7 +150,7 @@ func (c *Client) ListCredentials(userId string) (ListCredentialsResponse, error)
 	if resp.StatusCode != 200 {
 		var apiErr APIErrorResponse
 		json.Unmarshal(body, &apiErr)
-		return ListCredentialsResponse{}, errors.New(apiErr.Title)
+		return ListCredentialsResponse{}, apiErr
 	}
 
 	var response ListCredentialsResponse
@@ -143,6 +162,7 @@ func (c *Client) ListCredentials(userId string) (ListCredentialsResponse, error)
 	return response, nil
 }
 
+// Deletes a credential.
 func (c *Client) DeleteCredential(request DeleteCredentialRequest) error {
 	jsonData, err := json.Marshal(request)
 	if err != nil {
@@ -167,7 +187,7 @@ func (c *Client) DeleteCredential(request DeleteCredentialRequest) error {
 		body, _ := io.ReadAll(resp.Body)
 		var apiErr APIErrorResponse
 		json.Unmarshal(body, &apiErr)
-		return errors.New(apiErr.Title)
+		return apiErr
 	}
 
 	return nil

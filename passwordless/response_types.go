@@ -1,28 +1,6 @@
 package passwordless
 
-type Client struct {
-	ApiSecret string
-	BaseUrl   string
-}
-
-type RegisterTokenRequest struct {
-	UserId      string `json:"userId"`
-	Username    string `json:"username"`
-	Displayname string `json:"displayname"`
-}
-
-type APIErrorResponse struct {
-	Type      string `json:"type"`
-	Title     string `json:"title"`
-	Status    int    `json:"status"`
-	ErrorCode string `json:"errorCode"`
-}
-
 type RegisterTokenResponse struct {
-	Token string `json:"token"`
-}
-
-type VerifySigninRequest struct {
 	Token string `json:"token"`
 }
 
@@ -38,12 +16,6 @@ type VerifySigninResponse struct {
 	ExpiresAt string `json:"expiresAt"`
 	TokenId   string `json:"tokenId"`
 	Type      string `json:"type"`
-}
-
-type AliasRequest struct {
-	UserId  string   `json:"userId"`
-	Aliases []string `json:"aliases"`
-	Hashing bool     `json:"hashing"`
 }
 
 type CredentialDescriptor struct {
@@ -69,8 +41,4 @@ type Credential struct {
 
 type ListCredentialsResponse struct {
 	Values []Credential `json:"values"`
-}
-
-type DeleteCredentialRequest struct {
-	CredentialId string `json:"credentialId"`
 }
