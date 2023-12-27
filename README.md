@@ -1,3 +1,5 @@
+### Winner at [Passwordless.dev Hackathon](https://community.bitwarden.com/t/passwordless-dev-hackathon-winners-announcement/61281) !
+
 # Introduction
 Community built Passwordless.dev sdk library for Go  🚀
 
@@ -6,6 +8,7 @@ Official Passwordless docs: https://docs.passwordless.dev
 Admin portal to create an account: https://admin.passwordless.dev
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/AJAYK-01/passwordless-go/passwordless.svg)](https://pkg.go.dev/github.com/AJAYK-01/passwordless-go/passwordless)
+
 
 # Installation
 
